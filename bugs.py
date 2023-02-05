@@ -22,5 +22,5 @@ for tr in trs:
 
 connection = MongoClient('mongodb://localhost:27017')
 database = connection['recent-anthem']
-collection = database['top.100']
+collection = database['top.100.musics']
 result = collection.insert_many(music_list)

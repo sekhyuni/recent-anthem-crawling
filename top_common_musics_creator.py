@@ -3,10 +3,10 @@ from pymongo import MongoClient
 import numpy
 from operator import itemgetter
 
-def calculator():
+def top_common_musics_creator():
     connection = MongoClient('mongodb://localhost:27017')
     database = connection['recent-anthem']
-    collection = database['top.100']
+    collection = database['top.100.musics']
     
     bugs = {}
     genie = {}
@@ -27,9 +27,11 @@ def calculator():
             common_music_list.append({ 'rank_average': rank_average, 'title': music['title'], 'album': music['album'], 'artist': music['artist'], 'crawling_time': music['crawling_time'] })
 
     sorted_common_music_list = sorted(common_music_list, key=itemgetter('rank_average'))
+    for idx, music in enumerate(sorted_common_music_list):
+        sorted_common_music_list[idx]['rank'] = idx + 1
     
-    collection = database['top.common']
+    collection = database['top.common.musics']
     result = collection.insert_many(sorted_common_music_list)
 
-calculator()
+top_common_musics_creator()
     
