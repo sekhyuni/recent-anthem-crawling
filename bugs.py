@@ -6,11 +6,13 @@ from pymongo import MongoClient
 import datetime
  
 now = datetime.datetime.now()
+now_yymmdd = now.strftime('%Y%m%d')
+now_hour = now.strftime('%H')
 
 music_list = []
 headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
 
-data = requests.get('https://music.bugs.co.kr/chart', headers=headers)
+data = requests.get('https://music.bugs.co.kr/chart/track/realtime/total?chartdate=' + now_yymmdd + '&charthour=' + now_hour, headers=headers)
 soup = BeautifulSoup(data.text, 'html.parser')
 trs = soup.select('#container > section > div.innerContainer > div#CHARTrealtime > table.byChart > tbody > tr')
 for tr in trs:
@@ -18,7 +20,7 @@ for tr in trs:
      title = tr.select_one('th > p.title > a').text.strip()
      album = tr.select_one('td > a.album').text.strip()
      artist = tr.select_one('td > p.artist > a').text.strip()
-     music_list.append({ 'vendor': 'bugs', 'rank': rank, 'title': title, 'album': album, 'artist': artist, 'crawling_time': now })
+     music_list.append({ 'vendor': 'bugs', 'rank': rank, 'title': title, 'album': album, 'artist': artist, 'crawling_time': now_yymmdd + now_hour })
 
 connection = MongoClient('mongodb://localhost:27017')
 database = connection['recent-anthem']

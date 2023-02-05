@@ -2,6 +2,11 @@ from pymongo import MongoClient
 
 import numpy
 from operator import itemgetter
+import datetime
+ 
+now = datetime.datetime.now()
+now_yymmdd = now.strftime('%Y%m%d')
+now_hour = now.strftime('%H')
 
 def top_common_musics_creator():
     connection = MongoClient('mongodb://localhost:27017')
@@ -11,7 +16,7 @@ def top_common_musics_creator():
     bugs = {}
     genie = {}
     melon = {}
-    for music in collection.find():
+    for music in collection.find({ 'crawling_time': now_yymmdd + now_hour }):
         if (music['vendor'] == 'bugs'):
             bugs[music['title']] = { 'rank': music['rank'], 'title': music['title'], 'album': music['album'], 'artist': music['artist'], 'crawling_time': music['crawling_time'] }
         elif (music['vendor'] == 'genie'):

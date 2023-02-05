@@ -20,7 +20,7 @@ for tr in trs:
      title = tr.select_one('td.info > a.title.ellipsis').text.strip()
      album = tr.select_one('td.info > a.albumtitle.ellipsis').text.strip()
      artist = tr.select_one('td.info > a.artist.ellipsis').text.strip()
-     music_list.append({ 'vendor': 'genie', 'rank': rank, 'title': title, 'album': album, 'artist': artist, 'crawling_time': now })
+     music_list.append({ 'vendor': 'genie', 'rank': rank, 'title': title, 'album': album, 'artist': artist, 'crawling_time': now_yymmdd + now_hour })
      
 data = requests.get('https://www.genie.co.kr/chart/top200?ditc=D&ymd=' + now_yymmdd + '&hh=' + now_hour + '&rtm=Y&pg=2', headers=headers)
 soup = BeautifulSoup(data.text, 'html.parser')
@@ -30,7 +30,7 @@ for tr in trs:
      title = tr.select_one('td.info > a.title.ellipsis').text.strip()
      album = tr.select_one('td.info > a.albumtitle.ellipsis').text.strip()
      artist = tr.select_one('td.info > a.artist.ellipsis').text.strip()
-     music_list.append({ 'vendor': 'genie', 'rank': rank, 'title': title, 'album': album, 'artist': artist, 'crawling_time': now })
+     music_list.append({ 'vendor': 'genie', 'rank': rank, 'title': title, 'album': album, 'artist': artist, 'crawling_time': now_yymmdd + now_hour })
      
 connection = MongoClient('mongodb://localhost:27017')
 database = connection['recent-anthem']
