@@ -1,3 +1,7 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -22,7 +26,7 @@ for tr in trs:
      artist = tr.select_one('td > p.artist > a').text.strip()
      music_list.append({ 'vendor': 'bugs', 'rank': rank, 'title': title, 'album': album, 'artist': artist, 'crawling_time': now_yymmdd + now_hour })
 
-connection = MongoClient('mongodb://localhost:27017')
+connection = MongoClient('mongodb+srv://' + os.environ['MONGODB_USERNAME'] + ':' + os.environ['MONGODB_PASSWORD'] + '@recentanthem.xqvhmwa.mongodb.net')
 database = connection['recent-anthem']
 collection = database['top.100.musics']
 result = collection.insert_many(music_list)

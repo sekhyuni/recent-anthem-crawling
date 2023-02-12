@@ -1,3 +1,7 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 from pymongo import MongoClient
 
 import numpy
@@ -9,7 +13,7 @@ now_yymmdd = now.strftime('%Y%m%d')
 now_hour = now.strftime('%H')
 
 def top_common_musics_creator():
-    connection = MongoClient('mongodb://localhost:27017')
+    connection = MongoClient('mongodb+srv://' + os.environ['MONGODB_USERNAME'] + ':' + os.environ['MONGODB_PASSWORD'] + '@recentanthem.xqvhmwa.mongodb.net')
     database = connection['recent-anthem']
     collection = database['top.100.musics']
     
@@ -39,4 +43,3 @@ def top_common_musics_creator():
     result = collection.insert_many(sorted_common_music_list)
 
 top_common_musics_creator()
-    
