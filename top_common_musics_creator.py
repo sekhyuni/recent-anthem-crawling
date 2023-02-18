@@ -7,10 +7,13 @@ from pymongo import MongoClient
 import numpy
 from operator import itemgetter
 import datetime
+import pytz
  
 now = datetime.datetime.now()
-now_yymmdd = now.strftime('%Y%m%d')
-now_hour = now.strftime('%H')
+kr_tz = pytz.timezone('Asia/Seoul')
+kr_now = now.astimezone(kr_tz)
+kr_now_yymmdd = kr_now.strftime('%Y%m%d')
+kr_now_hour = kr_now.strftime('%H')
 
 def top_common_musics_creator():
     connection = MongoClient('mongodb+srv://' + os.environ['MONGODB_USERNAME'] + ':' + os.environ['MONGODB_PASSWORD'] + '@recentanthem.xqvhmwa.mongodb.net')
@@ -20,7 +23,7 @@ def top_common_musics_creator():
     bugs = {}
     genie = {}
     melon = {}
-    for music in collection.find({ 'crawling_time': now_yymmdd + now_hour }):
+    for music in collection.find({ 'crawling_time': kr_now_yymmdd + kr_now_hour }):
         if (music['vendor'] == 'bugs'):
             bugs[music['title']] = { 'rank': music['rank'], 'title': music['title'], 'album': music['album'], 'artist': music['artist'], 'crawling_time': music['crawling_time'] }
         elif (music['vendor'] == 'genie'):
